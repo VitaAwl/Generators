@@ -1,0 +1,59 @@
+<script>
+var n = Array(11);
+var alb = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"];
+
+n[0] = 0x0; /* 0x1 - Score: Math.pow(2, 16), 0x2 - Score: Math.pow(2, 17),
+			0x4 - !Score: Math.pow(2, 18), 0x8 - !Score: Math.pow(2, 19). */
+n[1] = 0x0; /* 0x1 - !Score: Math.pow(2, 12), 0x2 - !Score: Math.pow(2, 13),
+			0x4 - Score: Math.pow(2, 14), 0x8 - !Score: Math.pow(2, 15). */
+n[2] = 0x1; /* 0x1 - Baja oil rigs, 0x2 - Oilrig interior, 0x3 - Mexico, 0x7 - Las Vegas, 
+			0x8 - Casino, 0x9 - Underground, 0xA - Game Over, 0xB - Credits */
+n[4] = 0x0; /* 0x1 - Score: Math.pow(2, 0), 0x2 - !Score: Math.pow(2, 1),
+			0x4 - Score: Math.pow(2, 2), 0x8 - !Score: Math.pow(2, 3). */
+n[5] = 0x0; /* 0x1 - !Score: Math.pow(2, 8), 0x2 - Score: Math.pow(2, 9),
+			0x4 - Score: Math.pow(2, 10), 0x8 - !Score: Math.pow(2, 11). */
+n[7] = 0x0; /* 0x1 - !Score: Math.pow(2, 4), 0x2 - !Score: Math.pow(2, 5),
+			0x4 - Score: Math.pow(2, 6), 0x8 - Score: Math.pow(2, 7). */ 
+n[8] = 0x0; /* 0x1 - !Erich Newhauser: Newguy, 0x2 - Jim Flaherty: Outback, 
+			0x4 - !Simon Freeman: Freeperson, 0x8 - !Atsuko Matsumoto: Stinger. */
+n[9] = 0x0; /* 0x1 - Willy Aguillar: Bravo, 0x2 - !Melissa Mcgowan: Legal.
+			0x4 - !Peter Demetri: Cossack, 0x8 - ?*/
+n[10] = 0x0; /* 0x1 - !Score: Math.pow(2, 20), 0x2 - Score: Math.pow(2, 21),
+			 0x4 - !Score: Math.pow(2, 22), 0x8 - Score: Math.pow(2, 23). */
+// Примечание: Mark Douglas: Long-Haul доступен, если номер уровня больше 2-ух (начиная с уровня Mexico).
+
+var c_add = 0;
+var c_xor = 0;
+
+n[3] = 0;
+n[6] = 0;
+
+for (var i = 0; i < 11; i++)
+{
+	c_add += n[i];	
+    c_xor ^= n[i];
+}
+
+n[3] = c_add % 0x1F;
+n[6] = c_xor * 2;
+
+n[2] += n[9];
+n[9] += n[0];
+n[0] += n[8];
+n[8] += n[7];
+n[7] += n[4];
+n[4] += n[1];
+n[1] += n[10];
+n[10] += n[5];
+n[5] = n[5] * 2;
+
+for (var i = 0; i < 11; i++)
+{
+	n[i] %= 0x1F;
+}
+
+for (var i = 0; i < 11; i++)
+{
+	document.write(alb[n[i]]);
+}
+</script> 
